@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
 import { SignupSchema } from "@/validation/schema";
-import { signUp } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 
 export default function SignInForm({ ...props }: React.ComponentProps<"div">) {
   const router = useRouter();
@@ -36,7 +36,7 @@ export default function SignInForm({ ...props }: React.ComponentProps<"div">) {
   });
 
   const onSubmit = async (data: z.infer<typeof SignupSchema>) => {
-    const response = await signUp.email({
+    const response = await authClient.signUp.email({
       name: data.name,
       email: data.email,
       password: data.password,

@@ -1,35 +1,15 @@
-import mongoose from "mongoose";
+import { MongoClient } from "mongodb";
 
-import { MONGO_URI } from "./config";
+import { MONGO_URI, config } from "./config";
 
-let cached = global.mongoose || { conn: null, promise: null };
+export const client = new MongoClient(MONGO_URI);
+export const db = client.db();
 
-export const connectDB = async () => {
-  if (cached.conn) {
-    return cached.conn;
-  }
+async function connect() {
+  // Use connect method to connect to the server
+  await client.connect();
 
-  try {
-    if (!cached.promise) {
-      cached.promise = mongoose.connect(MONGO_URI, {
-        bufferCommands: false,
-        serverSelectionTimeoutMS: 10000,
-        family: 4,
-      });
-      console.log("MongoDB connected");
-    }
-    cached.conn = await cached.promise;
-    return cached.conn;
-  } catch (error) {
-    console.error("MongoDB connection error:", error);
-    cached.promise = null;
-    throw error;
-  }
-};
+  return "done.";
+}
 
-export const getMongoClient = async () => {
-  const conn = await connectDB();
-  return conn.connection.getClient().db();
-};
-
-global.mongoose = cached;
+connect().then(console.log).catch(console.error);

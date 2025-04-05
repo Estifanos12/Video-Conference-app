@@ -23,5 +23,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/"], // Apply middleware to specific routes
+  matcher: ["/", "/room/:roomId"], // Apply middleware to specific routes
 };

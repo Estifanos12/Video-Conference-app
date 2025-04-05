@@ -1,12 +1,13 @@
-import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { betterAuth } from "better-auth";
+import { nextCookies } from "better-auth/next-js";
 
-import { getMongoClient } from "@/db/connect";
+import { db } from "@/db/connect";
 
 export const auth = betterAuth({
-  database: mongodbAdapter(await getMongoClient()),
+  database: mongodbAdapter(db),
   emailAndPassword: {
     enabled: true,
-    autoSignIn: false,
   },
+  plugins: [nextCookies()],
 });

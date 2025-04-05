@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { authClient, signOut } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 
 import { Button } from "./ui/button";
 
@@ -11,17 +11,15 @@ export function User() {
   const router = useRouter();
 
   const handleSignOut = async () => {
-    await signOut();
+    await authClient.signOut();
     router.push("/login");
   };
-
-  console.log(session);
 
   return (
     <div>
       <h1 className="text-2xl font-bold">User</h1>
-      <p>User: </p>
-      <p>Email: </p>
+      <p>User: {session.data?.user.name}</p>
+      <p>Email: {session.data?.user.email}</p>
       <Button onClick={handleSignOut}>Logout</Button>
     </div>
   );
