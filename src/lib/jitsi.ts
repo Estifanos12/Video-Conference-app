@@ -18,13 +18,15 @@ export function buildOptions(room: string) {
   };
 }
 
-export function handleTrackAdded(meetingGrid: HTMLElement, track: any) {
+export function handleTrackAdded(track: any) {
   console.log("Track added!", track.getType(), track.getId());
   console.log("Is local track:", track.isLocal());
 
   if (track.getType() === "video") {
     const videoNode = document.createElement("video");
-
+    const meetingGrid = document.getElementById(
+      "meeting-grid"
+    ) as HTMLDivElement;
     videoNode.id = track.getId();
     videoNode.className = "jitsiTrack";
     videoNode.autoplay = true;
@@ -73,15 +75,15 @@ declare global {
 export async function onConnectionSuccess(
   conference: any,
   room: string,
-  connection: any,
-  meetingRef: any
+  connection: any
 ) {
   // Initialize conference
   conference = connection.initJitsiConference(room, {});
 
   // Setup event listeners
-  conference.on(window.JitsiMeetJS.events.conference.TRACK_ADDED, (track) =>
-    handleTrackAdded(meetingRef, track)
+  conference.on(
+    window.JitsiMeetJS.events.conference.TRACK_ADDED,
+    handleTrackAdded
   );
   conference.on(
     window.JitsiMeetJS.events.conference.TRACK_REMOVED,
@@ -120,12 +122,7 @@ export function onConnectionDisconnected() {
   console.log("connection disconnected!");
 }
 
-export async function connect(
-  room: string,
-  connection: any,
-  conference: any,
-  meetingGrid: any
-) {
+export async function connect(room: string, connection: any, conference: any) {
   const options = buildOptions(room);
 
   // Create connection.
@@ -134,9 +131,10 @@ export async function connect(
     JWT_TOKEN,
     options
   ));
+
   conn.addEventListener(
     window.JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,
-    () => onConnectionSuccess(conference, room, connection, meetingGrid)
+    () => onConnectionSuccess(conference, room, connection)
   );
   conn.addEventListener(
     window.JitsiMeetJS.events.connection.CONNECTION_FAILED,

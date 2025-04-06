@@ -6,12 +6,6 @@ import { JISTI_SCRIPT_URL, connect, leave } from "@/lib/jitsi";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-// const appIdEl = document.getElementById('appIdText');
-// const roomEl = document.getElementById('roomText');
-// const jwtEl = document.getElementById('jwtText');
-// const joinBtn = document.getElementById('joinBtn');
-// const leaveBtn = document.getElementById('leaveBtn');
-
 export default function Room() {
   const [hasLoaded, setHasLoaded] = useState(false);
   const [room, setRoom] = useState<string>("");
@@ -19,17 +13,11 @@ export default function Room() {
   const connectionRef = useRef<any>(null);
   const conferenceRef = useRef<any>(null);
 
-  const meetingGridRef = useRef<HTMLDivElement>(null);
   const joinBtnRef = useRef<HTMLButtonElement>(null);
   const leaveBtnRef = useRef<HTMLButtonElement>(null);
 
   const handleConnect = async () => {
-    await connect(
-      room,
-      connectionRef.current,
-      conferenceRef.current,
-      meetingGridRef.current
-    );
+    await connect(room, connectionRef.current, conferenceRef.current);
   };
 
   const handleLeave = async () => {
@@ -81,7 +69,7 @@ export default function Room() {
         </Button>
       </div>
 
-      <div className="flex flex-col gap-5" ref={meetingGridRef}></div>
+      <div className="flex flex-col gap-5" id="meeting-grid"></div>
     </div>
   );
 }
