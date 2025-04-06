@@ -1,8 +1,14 @@
-export default function RoomPage({ params }: { params: { roomId: string } }) {
+import Room from "@/components/jitsi/room";
+
+export default async function RoomPage({
+  params,
+}: {
+  params: { roomId: string };
+}) {
+  const { roomId } = await params;
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-2xl font-bold">Room ID: {params.roomId}</h1>
-      <p>Room details and video call interface will go here.</p>
+      <Room />
     </div>
   );
 }
